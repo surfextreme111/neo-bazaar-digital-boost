@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
 import PricingSection from '@/components/PricingSection';
+import DeliverySection from '@/components/DeliverySection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
@@ -15,6 +16,7 @@ const Index = () => {
       <main className="flex-1 pt-16">
         <HeroSection />
         <ServicesSection />
+        <DeliverySection />
         <PricingSection />
         <ContactSection />
       </main>

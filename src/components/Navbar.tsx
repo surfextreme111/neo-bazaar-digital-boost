@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -32,29 +33,31 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center">
-          <a href="#" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neobazar-red to-neobazar-blue">
               NeoBazar
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#" className="font-medium text-gray-700 hover:text-neobazar-red transition-colors">
-              Inicio
-            </a>
-            <a href="#" className="font-medium text-gray-700 hover:text-neobazar-red transition-colors">
+            <a href="/#servicios" className="font-medium text-gray-700 hover:text-neobazar-red transition-colors">
               Servicios
             </a>
-            <a href="#" className="font-medium text-gray-700 hover:text-neobazar-red transition-colors">
+            <a href="/#precios" className="font-medium text-gray-700 hover:text-neobazar-red transition-colors">
               Precios
             </a>
-            <a href="#" className="font-medium text-gray-700 hover:text-neobazar-red transition-colors">
+            <a href="/#contacto" className="font-medium text-gray-700 hover:text-neobazar-red transition-colors">
               Contacto
             </a>
-            <Button className="btn-primary">
-              Empieza Ahora
-            </Button>
+            <a href="/#entregas" className="font-medium text-gray-700 hover:text-neobazar-red transition-colors">
+              Entregas Rápidas
+            </a>
+            <Link to="/">
+              <Button className="btn-primary">
+                Empieza Ahora
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -78,36 +81,38 @@ const Navbar = () => {
         <div className="md:hidden bg-white shadow-lg">
           <div className="container mx-auto px-4 py-4 space-y-4">
             <a 
-              href="#" 
-              className="block font-medium text-gray-700 hover:text-neobazar-red transition-colors py-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Inicio
-            </a>
-            <a 
-              href="#" 
+              href="/#servicios" 
               className="block font-medium text-gray-700 hover:text-neobazar-red transition-colors py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Servicios
             </a>
             <a 
-              href="#" 
+              href="/#precios" 
               className="block font-medium text-gray-700 hover:text-neobazar-red transition-colors py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Precios
             </a>
             <a 
-              href="#" 
+              href="/#contacto" 
               className="block font-medium text-gray-700 hover:text-neobazar-red transition-colors py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contacto
             </a>
-            <Button className="btn-primary w-full">
-              Empieza Ahora
-            </Button>
+            <a 
+              href="/#entregas" 
+              className="block font-medium text-gray-700 hover:text-neobazar-red transition-colors py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Entregas Rápidas
+            </a>
+            <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button className="btn-primary w-full">
+                Empieza Ahora
+              </Button>
+            </Link>
           </div>
         </div>
       )}

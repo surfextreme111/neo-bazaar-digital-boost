@@ -1,13 +1,73 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import { submitContactForm } from '@/api/contactApi';
+import { useToast } from '@/hooks/use-toast';
 
 const ContactSection = () => {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    businessName: '',
+    message: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await submitContactForm(formData);
+      
+      if (response.success) {
+        toast({
+          title: "¡Enviado correctamente!",
+          description: response.message,
+          variant: "default",
+        });
+        
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          businessName: '',
+          message: ''
+        });
+      } else {
+        toast({
+          title: "Error al enviar",
+          description: response.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <section className="section bg-white">
+    <section id="contacto" className="section bg-white">
       <div className="text-center mb-12 slide-in">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">Contáctanos</h2>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -17,30 +77,76 @@ const ContactSection = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div className="slide-in-right">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                <Input id="name" className="w-full" placeholder="Tu nombre" />
+                <Input 
+                  id="name" 
+                  className="w-full" 
+                  placeholder="Tu nombre" 
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <Input id="email" type="email" className="w-full" placeholder="tu@email.com" />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  className="w-full" 
+                  placeholder="tu@email.com" 
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
             </div>
             
-            <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Asunto</label>
-              <Input id="subject" className="w-full" placeholder="¿En qué podemos ayudarte?" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                <Input 
+                  id="phone" 
+                  className="w-full" 
+                  placeholder="Tu teléfono" 
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="businessName" className="block text-sm font-medium text-gray-700 mb-1">Nombre del Bazar</label>
+                <Input 
+                  id="businessName" 
+                  className="w-full" 
+                  placeholder="Nombre de tu negocio" 
+                  value={formData.businessName}
+                  onChange={handleInputChange}
+                />
+              </div>
             </div>
             
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
-              <Textarea id="message" rows={5} className="w-full" placeholder="Cuéntanos sobre tu negocio y tus necesidades..." />
+              <Textarea 
+                id="message" 
+                rows={5} 
+                className="w-full" 
+                placeholder="Cuéntanos sobre tu negocio y tus necesidades..." 
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+              />
             </div>
             
-            <Button type="submit" className="btn-primary w-full">
-              Enviar mensaje
+            <Button 
+              type="submit" 
+              className="btn-primary w-full" 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
             </Button>
           </form>
         </div>
