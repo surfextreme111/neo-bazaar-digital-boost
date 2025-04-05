@@ -2,8 +2,15 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+  
+  const handleStartNow = () => {
+    navigate('/#contacto');
+  };
+  
   return (
     <section className="relative bg-gradient-to-r from-neobazar-blue/10 to-neobazar-red/10 overflow-hidden">
       <div className="section flex flex-col md:flex-row items-center justify-between">
@@ -17,6 +24,7 @@ const HeroSection = () => {
           <Button 
             className="btn-primary flex items-center gap-2 text-lg" 
             size="lg"
+            onClick={handleStartNow}
           >
             Empieza ahora <ArrowRight className="h-5 w-5" />
           </Button>

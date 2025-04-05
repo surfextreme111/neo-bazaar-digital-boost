@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, CreditCard, MessageSquare, Check, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, CreditCard, MessageSquare, Check, Clock, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -131,7 +132,11 @@ const PlanDetails = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [progress, setProgress] = useState(33);
   
-  const selectedPlan = pricingPlans.find(p => p.id === planId) || pricingPlans[0];
+  const planIndex = pricingPlans.findIndex(p => p.id === planId);
+  const selectedPlan = planIndex !== -1 ? pricingPlans[planIndex] : pricingPlans[0];
+  
+  const hasPreviousPlan = planIndex > 0;
+  const hasNextPlan = planIndex < pricingPlans.length - 1;
   
   useEffect(() => {
     setProgress(currentStep * 33.33);
@@ -149,6 +154,16 @@ const PlanDetails = () => {
     if (currentStep < 3) {
       setCurrentStep(currentStep + 1);
     }
+  };
+  
+  const navigateToPlan = (planId) => {
+    navigate(`/plan-details/${planId}`);
+    setCurrentStep(1);
+    window.scrollTo(0, 0);
+  };
+  
+  const navigateToContact = () => {
+    navigate('/#contacto');
   };
 
   return (
@@ -174,7 +189,33 @@ const PlanDetails = () => {
         
         {currentStep === 1 && (
           <div className="slide-in">
-            <div className="bg-white p-8 rounded-xl shadow-md mb-12">
+            <div className="bg-white p-8 rounded-xl shadow-md mb-8">
+              {/* Plan Navigation */}
+              <div className="flex justify-between mb-6">
+                {hasPreviousPlan ? (
+                  <Button 
+                    variant="outline" 
+                    className="flex items-center gap-2"
+                    onClick={() => navigateToPlan(pricingPlans[planIndex - 1].id)}
+                  >
+                    <ArrowDown className="h-4 w-4" />
+                    Plan anterior
+                  </Button>
+                ) : (
+                  <div></div>
+                )}
+                
+                {hasNextPlan && (
+                  <Button 
+                    className="flex items-center gap-2 btn-primary"
+                    onClick={() => navigateToPlan(pricingPlans[planIndex + 1].id)}
+                  >
+                    <ArrowUp className="h-4 w-4" />
+                    Mejorar al siguiente plan
+                  </Button>
+                )}
+              </div>
+              
               <div className="flex items-center gap-2 mb-4">
                 <h1 className="text-3xl font-bold">{selectedPlan.name}</h1>
                 {selectedPlan.recommended && (
@@ -218,7 +259,7 @@ const PlanDetails = () => {
                 <Button 
                   className="flex gap-2 items-center md:w-auto w-full"
                   variant="outline"
-                  onClick={() => window.open('https://calendly.com', '_blank')}
+                  onClick={navigateToContact}
                 >
                   <Calendar className="h-4 w-4" />
                   Agendar una llamada
