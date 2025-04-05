@@ -1,14 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Calendar, CreditCard, MessageSquare, Check } from 'lucide-react';
+import { ArrowLeft, Calendar, CreditCard, MessageSquare, Check, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Badge } from '@/components/ui/badge';
 
-// Import the same plans data
 const pricingPlans = [
   {
     name: "PLAN BÁSICO",
@@ -132,7 +131,6 @@ const PlanDetails = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [progress, setProgress] = useState(33);
   
-  // Find the selected plan
   const selectedPlan = pricingPlans.find(p => p.id === planId) || pricingPlans[0];
   
   useEffect(() => {
@@ -143,7 +141,7 @@ const PlanDetails = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     } else {
-      navigate('/#precios'); // Go back to pricing section
+      navigate('/#precios');
     }
   };
 
@@ -272,7 +270,6 @@ const PlanDetails = () => {
               Para continuar con la contratación del {selectedPlan.name}, necesitamos algunos datos de contacto.
             </p>
             
-            {/* Placeholder for contact form */}
             <div className="bg-white p-8 rounded-xl shadow-md mb-12">
               <p className="text-center text-gray-500 py-8">
                 Aquí iría un formulario de contacto con los campos necesarios
