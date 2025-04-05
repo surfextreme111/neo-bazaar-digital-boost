@@ -3,10 +3,12 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, Clock, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 const pricingPlans = [
   {
     name: "PLAN BÁSICO",
+    id: "basic",
     setupPrice: "990€",
     monthlyPrice: "79€",
     description: "Ideal para empezar a digitalizar tu tienda sin complicaciones.",
@@ -24,6 +26,7 @@ const pricingPlans = [
   },
   {
     name: "PLAN PRO",
+    id: "pro",
     setupPrice: "1.490€",
     monthlyPrice: "119€",
     description: "Para bazares que quieren destacar online y tener todo automatizado.",
@@ -44,6 +47,7 @@ const pricingPlans = [
   },
   {
     name: "PLAN AVANZADO",
+    id: "advanced",
     setupPrice: "1.990€",
     monthlyPrice: "159€",
     description: "Transformación digital total para bazares grandes o en expansión.",
@@ -64,6 +68,12 @@ const pricingPlans = [
 ];
 
 const PricingSection = () => {
+  const navigate = useNavigate();
+
+  const handleSelectPlan = (planId) => {
+    navigate(`/plan-details/${planId}`);
+  };
+  
   return (
     <section className="section bg-gray-50" id="precios">
       <div className="text-center mb-12 slide-in">
@@ -77,7 +87,7 @@ const PricingSection = () => {
         {pricingPlans.map((plan, index) => (
           <div 
             key={index}
-            className={`rounded-xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-2xl slide-in ${plan.highlight ? 'transform md:-translate-y-4' : ''}`}
+            className={`rounded-xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-105 slide-in ${plan.highlight ? 'transform md:-translate-y-4' : ''}`}
             style={{ animationDelay: `${index * 150}ms` }}
           >
             <div className={`p-6 ${plan.highlight ? 'bg-neobazar-blue text-white' : 'bg-white'}`}>
@@ -112,6 +122,7 @@ const PricingSection = () => {
               
               <Button 
                 className={`w-full py-3 ${plan.highlight ? 'bg-white text-neobazar-blue hover:bg-gray-100' : 'btn-primary'}`}
+                onClick={() => handleSelectPlan(plan.id)}
               >
                 Seleccionar plan
               </Button>
